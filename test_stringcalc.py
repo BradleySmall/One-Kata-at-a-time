@@ -7,7 +7,7 @@ Create a function add that takes a String and returns a String:
 String add(String number)
 The method can take 0, 1 or 2 numbers separated by comma, and returns their sum.
 ** An empty string will return “0”.
-Example of inputs: "", "1", "1.1,2.2".
+** Example of inputs: "", "1", "1.1,2.2".
 Many numbers
 Allow the add method to handle an unknow number of arguments.
 
@@ -49,10 +49,14 @@ Write a function for multiply with same rules
 
 """
 
-# "", "1", "1.1,2.2"
-
 def test_add_empty_return_0():
     assert stringcalc.add('') == '0'
 
 def test_add_single_return_self():
     assert stringcalc.add('2') == '2'
+
+def test_add_pair_return_sum():
+    assert stringcalc.add('2,3') == '5'
+
+def test_add_multiple_return_sum():
+    assert stringcalc.add('2,3,7,4') == '16'
