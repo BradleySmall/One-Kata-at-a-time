@@ -8,8 +8,8 @@ String add(String number)
 The method can take 0, 1 or 2 numbers separated by comma, and returns their sum.
 ** An empty string will return “0”.
 ** Example of inputs: "", "1", "1.1,2.2".
-Many numbers
-Allow the add method to handle an unknow number of arguments.
+**Many numbers
+**Allow the add method to handle an unknow number of arguments.
 
 Newline as separator
 Allow the add method to handle newlines as separators:
@@ -60,3 +60,12 @@ def test_add_pair_return_sum():
 
 def test_add_multiple_return_sum():
     assert stringcalc.add('2,3,7,4') == '16'
+
+def test_add_newline_delim_return_sum():
+    assert stringcalc.add('1\n2,3') == '6'
+"""
+"1\n2,3" should return "6".
+"175.2,\n35" is invalid and should return the message "Number expected but '\n' found at position 6."
+Missing number in last position
+Don’t allow the input to end in a separator.
+"""
