@@ -20,7 +20,7 @@ The method can take 0, 1 or 2 numbers separated by comma, and returns their sum.
 **Missing number in last position
 **Don’t allow the input to end in a separator.
 
-"1,3," is invalid and should return the message Number expected but EOF found.
+**"1,3," is invalid and should return the message Number expected but EOF found.
 
 Custom separators
 Allow the add method to handle a different delimiter. To change the delimiter, the beginning of the input will contain a separate line that looks like this:
@@ -74,3 +74,20 @@ def test_add_missing_endpos_raise_error():
     with pytest.raises(ValueError) as err:
         stringcalc.add('1,2,')
     assert err.value.args[0] == "Number expected but EOF found."
+
+def test_add_custom_delim_return_sum():
+    assert stringcalc.add('//;\n1;2') == '3'
+    assert stringcalc.add('//|\n1|2|3') == '6'
+    assert stringcalc.add('//sep\n2sep3') == '5'
+
+def test_add_invalid_delim_raise_error():
+    with pytest.raises(ValueError) as err:
+        stringcalc.add('//|\n1|2,3')
+    assert err.value.args[0] == "'|' expected but ',' found at position 3."
+
+
+
+"""
+"//|\n1|2,3" is invalid and should return the message "'|' expected but ',' found at position 3."
+All existing scenarios should work as before.
+"""
