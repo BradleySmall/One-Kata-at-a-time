@@ -1,4 +1,5 @@
 import stringcalc
+import pytest
 """This classic kata guides you step by step through the implementation of a calculator that receives a String as input. It is a good exercise on refactoring and incremental implementation. It is also a good candidate for practising TDD.
 
 First step
@@ -11,13 +12,13 @@ The method can take 0, 1 or 2 numbers separated by comma, and returns their sum.
 **Many numbers
 **Allow the add method to handle an unknow number of arguments.
 
-Newline as separator
-Allow the add method to handle newlines as separators:
+**Newline as separator
+**Allow the add method to handle newlines as separators:
 
-"1\n2,3" should return "6".
-"175.2,\n35" is invalid and should return the message "Number expected but '\n' found at position 6."
-Missing number in last position
-Don’t allow the input to end in a separator.
+**"1\n2,3" should return "6".
+**"175.2,\n35" is invalid and should return the message "Number expected but '\n' **found at position 6."
+**Missing number in last position
+**Don’t allow the input to end in a separator.
 
 "1,3," is invalid and should return the message Number expected but EOF found.
 
@@ -63,9 +64,13 @@ def test_add_multiple_return_sum():
 
 def test_add_newline_delim_return_sum():
     assert stringcalc.add('1\n2,3') == '6'
-"""
-"1\n2,3" should return "6".
-"175.2,\n35" is invalid and should return the message "Number expected but '\n' found at position 6."
-Missing number in last position
-Don’t allow the input to end in a separator.
-"""
+
+def test_add_duplicate_delim_raise_error():
+    with pytest.raises(ValueError) as err:
+        stringcalc.add('175.2,\n35')
+    assert err.value.args[0] == "Number expected but '\n' found at position 6."
+
+def test_add_missing_endpos_raise_error():
+    with pytest.raises(ValueError) as err:
+        stringcalc.add('1,2,')
+    assert err.value.args[0] == "Number expected but EOF found."
