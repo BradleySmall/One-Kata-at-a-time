@@ -19,5 +19,10 @@ def add(string):
             raise ValueError(f"'{delim}' expected but ',' found at position {pos}.")
 
     numbers = string.split(delim)
-    numbers = map(int, numbers)
+    numbers = list(map(int, numbers))
+    negatives = [num for num in numbers if num < 0]
+    if negatives:
+        nstr = ', '.join(map(str,negatives))
+        raise ValueError(f"Negative not allowed : {nstr}")        
+
     return str(sum(numbers))

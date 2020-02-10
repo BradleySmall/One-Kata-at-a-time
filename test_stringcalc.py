@@ -22,31 +22,32 @@ The method can take 0, 1 or 2 numbers separated by comma, and returns their sum.
 
 **"1,3," is invalid and should return the message Number expected but EOF found.
 
-Custom separators
-Allow the add method to handle a different delimiter. To change the delimiter, the beginning of the input will contain a separate line that looks like this:
+**Custom separators
+**Allow the add method to handle a different delimiter. To change the delimiter, the **beginning of the input will contain a separate line that looks like this:
+**
+**//[delimiter]\n[numbers]
+**"//;\n1;2" should return "3"
+**"//|\n1|2|3" should return "6"
+**"//sep\n2sep3" should return "5"
+**"//|\n1|2,3" is invalid and should return the message "'|' expected but ',' found at **position 3."
+**All existing scenarios should work as before.
 
-//[delimiter]\n[numbers]
-"//;\n1;2" should return "3"
-"//|\n1|2|3" should return "6"
-"//sep\n2sep3" should return "5"
-"//|\n1|2,3" is invalid and should return the message "'|' expected but ',' found at position 3."
-All existing scenarios should work as before.
+**Negative numbers
+**Calling add with negative numbers will return the message "Negative not allowed : **" listing all negative numbers that were in the list of numbers.
+**
+**"-1,2" is invalid and should return the message "Negative not allowed : -1"
+**"2,-4,-5" is invalid and should return the message "Negative not allowed : -4, -5"
 
-Negative numbers
-Calling add with negative numbers will return the message "Negative not allowed : " listing all negative numbers that were in the list of numbers.
+**Multiple errors
+** Not doing this because using exceptions
+**Calling add with multiple errors will return all error messages separated by **newlines.
+**"-1,,2" is invalid and return the message "Negative not allowed : -1\nNumber expected but ',' found at position 3."
 
-"-1,2" is invalid and should return the message "Negative not allowed : -1"
-"2,-4,-5" is invalid and should return the message "Negative not allowed : -4, -5"
-Multiple errors
-Calling add with multiple errors will return all error messages separated by newlines.
-
-"-1,,2" is invalid and return the message "Negative not allowed : -1\nNumber expected but ',' found at position 3."
-
-Errors management
-Introduce an internal add function returning a number instead of a String, and test many solutions for the error messages. - Exception - maybe and monad approch - POSIX return code with message managemement - tuple with error struct like in Go - etc.
-
-Other operations
-Write a function for multiply with same rules
+**Errors management
+**Introduce an internal add function returning a number instead of a String, and test many solutions for the error **messages. - Exception - maybe and monad approch - POSIX return code with message managemement - tuple with error struct **like in Go - etc.
+**
+**Other operations
+**Write a function for multiply with same rules
 
 """
 
@@ -85,9 +86,12 @@ def test_add_invalid_delim_raise_error():
         stringcalc.add('//|\n1|2,3')
     assert err.value.args[0] == "'|' expected but ',' found at position 3."
 
+def test_add_nonegs_raise_error():
+    with pytest.raises(ValueError) as err:
+        stringcalc.add('-1,3')
+    assert err.value.args[0] == "Negative not allowed : -1"
 
-
-"""
-"//|\n1|2,3" is invalid and should return the message "'|' expected but ',' found at position 3."
-All existing scenarios should work as before.
-"""
+def test_add_nonegs_multiple_raise_error():
+    with pytest.raises(ValueError) as err:
+        stringcalc.add('2,-4,-5')
+    assert err.value.args[0] == "Negative not allowed : -4, -5"
