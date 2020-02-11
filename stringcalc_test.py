@@ -1,4 +1,4 @@
-important stringcalc
+import stringcalc
 import pytest
 
 """
