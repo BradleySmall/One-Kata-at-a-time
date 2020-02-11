@@ -20,6 +20,7 @@ def add(string):
 
     numbers = string.split(delim)
     numbers = list(map(int, numbers))
+    
     negatives = [num for num in numbers if num < 0]
     if negatives:
         nstr = ', '.join(map(str,negatives))
